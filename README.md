@@ -3,12 +3,14 @@
 ## Task
 
 ## Assumptions
-
+The application will be used by health surgeries i.e. users with low latency therefore front end sorting shouldn't be an issue
 
 ## Development
 
 - How did you approach solving the problem?
     - Include any decision making around libraries used, tooling choices
+
+https://61ba219448df2f0017e5a929.mockapi.io/api/patients?sortby=lastName is case sensitive. Better to sort on the front end anyway
 
 - How did you verify your solution works correctly?
 
