@@ -1,16 +1,35 @@
-import type { MetaFunction } from "@remix-run/node";
+import { useContext } from 'react';
+import type { MetaFunction } from '@remix-run/node';
+
+import PatientRecordsContext, {
+  PatientRecord,
+} from '../contexts/PatientRecordsContext';
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "accuBook Dashboard" },
-    { name: "description", content: "Patient vaccination dashboard" },
+    { title: 'accuBook Dashboard' },
+    { name: 'description', content: 'Patient vaccination dashboard' },
   ];
 };
 
 export default function Index() {
+  const records: PatientRecord[] = useContext(PatientRecordsContext);
+
   return (
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
+    <main>
+      <table>
+        <tbody>
+          {records?.map(
+            ({ id, lastName, firstName, nhsNumber, vaccineType }) => (
+              <tr key={id}>
+                <td>{`${lastName}, ${firstName}`}</td>
+                <td>{nhsNumber}</td>
+                <td> {vaccineType} </td>
+              </tr>
+            )
+          )}
+        </tbody>
+      </table>
+    </main>
   );
 }

@@ -1,4 +1,22 @@
-# Welcome to Remix + Vite!
+# AccuBook Dashboard
+
+## Task
+
+## Assumptions
+
+
+## Development
+
+- How did you approach solving the problem?
+    - Include any decision making around libraries used, tooling choices
+
+- How did you verify your solution works correctly?
+
+- How long did you spend on the exercise?
+
+- What would you add if you had more time and how?
+
+Configure moduleNameMapper to use absolute paths
 
 📖 See the [Remix docs](https://remix.run/docs) and the [Remix Vite docs](https://remix.run/docs/en/main/guides/vite) for details on supported features.
 

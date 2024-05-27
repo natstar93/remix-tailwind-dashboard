@@ -4,15 +4,34 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  json,
+  useLoaderData,
 } from '@remix-run/react';
 import type { LinksFunction } from '@remix-run/node';
+
 import stylesheet from '~/tailwind.css?url';
+import PatientRecordsContext from '~/contexts/PatientRecordsContext';
+import { PATIENTS_ENDPOINT } from '~/constants';
 
 export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: stylesheet },
 ];
 
+export const loader = async () => {
+  try {
+    const res = await fetch(PATIENTS_ENDPOINT);
+    const data = await res.json();
+    return json(data);
+  } catch (err: unknown) {
+    console.log('boo');
+    // TODO
+    return [];
+  }
+};
+
 export function Layout({ children }: { children: React.ReactNode }) {
+  const patientRecords = useLoaderData<typeof loader>();
+
   return (
     <html lang='en'>
       <head>
@@ -23,7 +42,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        {children}
+        <PatientRecordsContext.Provider value={patientRecords}>
+          {children}
+        </PatientRecordsContext.Provider>
+
         <ScrollRestoration />
         <Scripts />
       </body>
