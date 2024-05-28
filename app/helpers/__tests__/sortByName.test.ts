@@ -1,5 +1,5 @@
 import { PatientRecord } from '~/contexts/PatientRecordsContext';
-import sortByName from '../sortByName';
+import {sortByAscending, sortByDescending} from '../sortByName';
 
 describe('sortByName', () => {
   let testRecords: PatientRecord[];
@@ -34,14 +34,16 @@ describe('sortByName', () => {
 
   it('sorts records in ascending order', () => {
     const expectedRecords = [testRecords[2], testRecords[0], testRecords[1]];
-    const sortedRecords = sortByName('asc', testRecords);
+
+    const sortedRecords = sortByAscending(testRecords);
 
     expect(sortedRecords).toEqual(expectedRecords);
   });
 
   it('sorts records in descending order', () => {
     const expectedRecords = [testRecords[1], testRecords[0], testRecords[2]];
-    const sortedRecords = sortByName('desc', testRecords);
+    
+    const sortedRecords = sortByDescending(testRecords);
 
     expect(sortedRecords).toEqual(expectedRecords);
   });

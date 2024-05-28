@@ -3,6 +3,9 @@
 @tailwind utilities;
 
 @layer base {
+  body {
+    @apply flex flex-col min-h-screen;
+  }
   header {
     @apply sticky top-0 bg-brand-green p-4 flex flex-col md:flex-row justify-between;
   }
@@ -12,7 +15,7 @@
   }
 
   main {
-    @apply m-4;
+    @apply flex flex-col flex-grow gap-4 m-4;
   }
 
   h1 {
@@ -20,13 +23,6 @@
   }
 
   td {
-    @apply p-2
+    @apply p-2;
   }
 }
-/* tbody {
-  @apply 
-} */
-
-
-
-

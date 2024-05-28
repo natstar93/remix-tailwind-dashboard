@@ -5,12 +5,19 @@ import {
   Scripts,
   ScrollRestoration,
   json,
+  redirect,
   useLoaderData,
+  useSearchParams,
 } from '@remix-run/react';
-import type { LinksFunction } from '@remix-run/node';
+import type {
+  ActionFunctionArgs,
+  LinksFunction,
+  LoaderFunction,
+  LoaderFunctionArgs,
+} from '@remix-run/node';
 
 import stylesheet from '~/tailwind.css?url';
-import PatientRecordsContext from '~/contexts/PatientRecordsContext';
+import PatientRecordsContext, {PatientRecord} from '~/contexts/PatientRecordsContext';
 import { PATIENTS_ENDPOINT } from '~/constants';
 import Header from './components/header';
 
@@ -18,24 +25,47 @@ export const links: LinksFunction = () => [
   { rel: 'stylesheet', href: stylesheet },
 ];
 
-export const loader = async () => {
-  try {
-    const res = await fetch(PATIENTS_ENDPOINT);
-    const data = await res.json();
+export async function action({ request }: ActionFunctionArgs) {
+  const data = await request.formData();
+  const inputVal = data.get('patientSearch') || '';
 
-    return json(data);
+  if (inputVal.toString().length > 1) {
+    return redirect(`/patients?q=${inputVal}`);
+  }
+
+  return redirect(`/patients`);
+}
+
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const { searchParams } = new URL(request.url);
+  const query = searchParams.get('q');
+
+  try {
+    const res = await fetch(
+      `${PATIENTS_ENDPOINT}?${query ? `lastName=${query}` : ''}`
+    );
+    const patientRecords: PatientRecord[] | string = await res.json();
+
+    if(typeof patientRecords === 'string') {
+      throw new Error(patientRecords)
+    }
+
+    return json({ patientRecords, err: null });
   } catch (err: unknown) {
-    console.log('boo');
-    // TODO
-    return [];
+    if (err instanceof Error) {
+      return json({ patientRecords: [] as PatientRecord[], err: err.message });
+      // TODO: Better error messages
+    }
+
+    return json({ patientRecords: [] as PatientRecord[], err: 'unknown error' });
   }
 };
 
 export function Layout({ children }: { children: React.ReactNode }) {
-  const patientRecords = useLoaderData<typeof loader>();
+  const { patientRecords, err } = useLoaderData<typeof loader>();
 
   return (
-    <html lang='en'>
+    <html lang='en' suppressHydrationWarning={true}>
       <head>
         <meta charSet='utf-8' />
         <meta name='viewport' content='width=device-width, initial-scale=1' />
@@ -45,7 +75,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <PatientRecordsContext.Provider value={patientRecords}>
-          <Header />
+          <Header error={err} />
           {children}
         </PatientRecordsContext.Provider>
         <footer>Contact us</footer>

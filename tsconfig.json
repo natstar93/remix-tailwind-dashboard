@@ -6,8 +6,10 @@
     "**/.server/**/*.tsx",
     "**/.client/**/*.ts",
     "**/.client/**/*.tsx",
-    "jest-setup.ts"
-, "postcss.config.mjs"  ],
+    "jest-setup.ts",
+    "postcss.config.mjs",
+    "jest.config.ts"
+  ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "types": ["@remix-run/node", "vite/client", "jest"],

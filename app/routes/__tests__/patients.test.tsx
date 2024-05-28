@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 
 import PatientRecordsContext from '../../contexts/PatientRecordsContext';
-import Index from '../_index';
+import Patients from '../patients';
 
-describe('Index', () => {
+describe('Patients', () => {
   it('loads records correctly on render', async () => {
     const fakeData = [
       {
@@ -25,7 +25,7 @@ describe('Index', () => {
     ];
     render(
       <PatientRecordsContext.Provider value={fakeData}>
-        <Index />
+        <Patients />
       </PatientRecordsContext.Provider>
     );
 

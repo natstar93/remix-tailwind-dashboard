@@ -8,6 +8,7 @@ export type PatientRecord = {
   nhsNumber: string;
   id: string;
 };
+
 const PatientRecordsContext = createContext<PatientRecord[]>([]);
 
 export default PatientRecordsContext;

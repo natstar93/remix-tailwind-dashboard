@@ -1,13 +1,11 @@
 import { PatientRecord } from '~/contexts/PatientRecordsContext';
 
 const sortByName: (
-  order: 'asc' | 'desc',
-  unsortedRecords: PatientRecord[]
-) => PatientRecord[] = (order, unsortedRecords) => {
-  const isAscending = order === 'asc';
-  const outputRecords = [...unsortedRecords];
-  
-  const comparefn = (record: PatientRecord, nextRecord: PatientRecord) => {
+  order: 'asc' | 'desc'
+) => (record: PatientRecord, nextRecord: PatientRecord) => number =
+  (order) => (record, nextRecord) => {
+    const isAscending = order === 'asc';
+
     if (
       record.lastName.toLocaleLowerCase() <
       nextRecord.lastName.toLocaleLowerCase()
@@ -23,8 +21,18 @@ const sortByName: (
     return 0; // this could be extended to sort by firstName
   };
 
-  outputRecords.sort(comparefn);
-  return outputRecords;
+const sortByDirection = (
+  direction: 'asc' | 'desc',
+  records: PatientRecord[]
+) => {
+  const sortedRecords = [...records];
+  const sortByDir = sortByName(direction);
+  sortedRecords.sort(sortByDir);
+
+  return sortedRecords;
 };
 
-export default sortByName;
+export const sortByAscending = (records: PatientRecord[]) => sortByDirection('asc', records);
+
+export const sortByDescending = (records: PatientRecord[]) => sortByDirection('desc', records);
+
