@@ -1,18 +1,17 @@
 import { Form, useSubmit } from '@remix-run/react';
 
-const Header = ({ error }: { error: string | null }) => {
+const Header = () => {
   const submit = useSubmit();
 
   return (
     <header>
-      <h1>accuBook Dashboard</h1>
-      {error && <span role='alert'>{error}</span>}
+      <span className='text-4xl font-bold text-white'>accuBook Dashboard</span>
       <Form
         method='post'
         onChange={(event) => {
           submit(event.currentTarget, { replace: true });
         }}
-        aria-label="patient search form"
+        aria-label='patient search form'
       >
         <label className='text-white p-2' htmlFor='patientSearch'>
           Search by last name:

@@ -4,10 +4,13 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  isRouteErrorResponse,
   json,
   redirect,
   useLoaderData,
+  useRouteError,
 } from '@remix-run/react';
+
 import type {
   ActionFunctionArgs,
   LinksFunction,
@@ -40,32 +43,32 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const { searchParams } = new URL(request.url);
   const query = searchParams.get('q');
 
-  try {
-    const res = await fetch(
-      `${PATIENTS_ENDPOINT}${query ? `?lastName=${query}` : ''}`
-    );
-    const patientRecords: PatientRecord[] | string = await res.json();
+  const res = await fetch(
+    `${PATIENTS_ENDPOINT}${query ? `?lastName=${query}` : ''}`
+  );
+  const response: PatientRecord[] | string = await res.json();
 
-    if (typeof patientRecords === 'string') {
-      throw new Error(patientRecords);
-    }
-
-    return json({ patientRecords, err: null });
-  } catch (err: unknown) {
-    if (err instanceof Error) {
-      return json({ patientRecords: [] as PatientRecord[], err: err.message });
-      // TODO: Better error display messages
-    }
-
-    return json({
-      patientRecords: [] as PatientRecord[],
-      err: 'unknown error',
-    });
-  }
+  return typeof response === 'string' ? json([]) : json(response);
 };
 
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  if (isRouteErrorResponse(error)) {
+    return (
+      <p>
+        {error.statusText}
+      </p>
+    );
+  }
+  if (error instanceof Error) {
+    return <p>{error.message}</p>;
+  }
+  return <p>Unknown Error</p>;
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
-  const { patientRecords, err } = useLoaderData<typeof loader>();
+  const patientRecords = useLoaderData<typeof loader>();
 
   return (
     <html lang='en' suppressHydrationWarning={true}>
@@ -78,10 +81,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
       </head>
       <body>
         <PatientRecordsContext.Provider value={patientRecords}>
-          <Header error={err} />
-          {children}
+          <Header />
+          <main>
+            {children}
+          </main>
         </PatientRecordsContext.Provider>
-        <footer>Contact us</footer>
+        <footer>© Some Candidate</footer>
         <ScrollRestoration />
         <Scripts />
       </body>

@@ -25,6 +25,7 @@ const sortByDirection = (
   direction: 'asc' | 'desc',
   records: PatientRecord[]
 ) => {
+  if(!records.length) return [];
   const sortedRecords = [...records];
   const sortByDir = sortByName(direction);
   sortedRecords.sort(sortByDir);

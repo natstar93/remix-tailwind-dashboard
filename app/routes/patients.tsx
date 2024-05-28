@@ -29,6 +29,7 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function Patients() {
+  const [status, setStatus] = useState<string>('Loading patient data');
   const [isAscending, setIsAscending] = useState<boolean>(true);
   const [orderedRecords, setOrderedRecords] = useState<PatientRecord[]>([]);
   const records: PatientRecord[] = useContext(PatientRecordsContext);
@@ -38,43 +39,52 @@ export default function Patients() {
   };
 
   useEffect(() => {
-  
-    if (records.length) {
-      const sortedRecords = isAscending
-        ? sortByAscending(records)
-        : sortByDescending(records);
-      setOrderedRecords(sortedRecords);
-    }
-    else {
-      setOrderedRecords(records)
-    }
+    const sortedRecords = isAscending
+      ? sortByAscending(records)
+      : sortByDescending(records);
+    setOrderedRecords(sortedRecords);
+    setStatus(records.length ? '' : 'No records available');
   }, [records, isAscending, setOrderedRecords]);
 
   return (
-    <main>
+    <>
+      <h1>Patient Vaccination Records</h1>
       <div className='flex justify-end '>
         <button className='text-white bg-black p-2' onClick={onSortButtonClick}>
           Sort by name (
           {isAscending ? <> &darr; descending</> : <>&uarr; ascending </>})
         </button>
       </div>
-      <table className='size-full'>
+      <table className='size-full p-2 border-4 border-solid border-brand-green'>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>NHS Number</th>
+            <th>Type of Vaccination</th>
+          </tr>
+        </thead>
         <tbody>
-          {orderedRecords.length ? orderedRecords.map(
-            ({ id, lastName, firstName, nhsNumber, vaccineType }) => (
-              <tr key={id}>
-                <td className='border-y-2 border-l-2 border-solid border-brand-green'>{`${lastName}, ${firstName}`}</td>
-                <td className='border-y-2 border-solid border-brand-green'>
-                  {nhsNumber}
-                </td>
-                <td className='border-y-2 border-r-2 border-solid border-brand-green'>
-                  {vaccineType}
-                </td>
-              </tr>
+          {orderedRecords.length ? (
+            orderedRecords.map(
+              ({ id, lastName, firstName, nhsNumber, vaccineType }) => (
+                <tr key={id}>
+                  <td>{`${lastName}, ${firstName}`}</td>
+                  <td>
+                    {nhsNumber}
+                  </td>
+                  <td>
+                    {vaccineType}
+                  </td>
+                </tr>
+              )
             )
-          ) : <tr><td>No records</td></tr>}
+          ) : (
+            <tr>
+              <td>{status}</td>
+            </tr>
+          )}
         </tbody>
       </table>
-    </main>
+    </>
   );
 }

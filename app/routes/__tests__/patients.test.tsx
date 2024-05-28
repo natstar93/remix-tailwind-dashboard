@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 
-import PatientRecordsContext from '../../contexts/PatientRecordsContext';
+import PatientRecordsContext from '~/contexts/PatientRecordsContext';
 import Patients from '../patients';
 
 describe('Patients', () => {

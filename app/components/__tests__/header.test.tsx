@@ -28,22 +28,15 @@ describe('Header', () => {
   };
 
   it('renders header text', () => {
-    renderWithRouter(<Header error={null} />);
+    renderWithRouter(<Header />);
 
     expect(screen.getByRole('heading')).toHaveTextContent('accuBook Dashboard');
-    expect(screen.queryByRole('alert')).not.toBeInTheDocument();
-  });
-
-  it('renders error message', () => {
-    renderWithRouter(<Header error='my error' />);
-
-    expect(screen.getByRole('alert')).toHaveTextContent('my error');
   });
 
   it('calls submit on input change', async () => {
     const user = userEvent.setup();
 
-    renderWithRouter(<Header error={null} />);
+    renderWithRouter(<Header />);
     const input = screen.getByRole('textbox');
     const form = screen.getByRole('form');
 
