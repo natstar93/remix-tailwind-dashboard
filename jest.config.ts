@@ -6,7 +6,7 @@ module.exports = {
   injectGlobals: true,
   setupFilesAfterEnv: ['<rootDir>./jest-setup.ts'],
   moduleNameMapper: {
-    '\\.(css|less|scss)$': 'identity-obj-proxy',
+    '\\.(css\\?\\w+|css|less|scss)$': 'identity-obj-proxy',
     '~/(.*)': '<rootDir>./app/$1',
   },
   transform: {

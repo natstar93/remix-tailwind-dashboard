@@ -7,17 +7,17 @@ import {
   json,
   redirect,
   useLoaderData,
-  useSearchParams,
 } from '@remix-run/react';
 import type {
   ActionFunctionArgs,
   LinksFunction,
-  LoaderFunction,
   LoaderFunctionArgs,
 } from '@remix-run/node';
 
 import stylesheet from '~/tailwind.css?url';
-import PatientRecordsContext, {PatientRecord} from '~/contexts/PatientRecordsContext';
+import PatientRecordsContext, {
+  PatientRecord,
+} from '~/contexts/PatientRecordsContext';
 import { PATIENTS_ENDPOINT } from '~/constants';
 import Header from './components/header';
 
@@ -26,11 +26,11 @@ export const links: LinksFunction = () => [
 ];
 
 export async function action({ request }: ActionFunctionArgs) {
-  const data = await request.formData();
-  const inputVal = data.get('patientSearch') || '';
+  const formData = await request.formData();
+  const searchTerm = formData.get('patientSearch') || '';
 
-  if (inputVal.toString().length > 1) {
-    return redirect(`/patients?q=${inputVal}`);
+  if (searchTerm.toString().length > 1) {
+    return redirect(`/patients?q=${searchTerm}`);
   }
 
   return redirect(`/patients`);
@@ -42,22 +42,25 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   try {
     const res = await fetch(
-      `${PATIENTS_ENDPOINT}?${query ? `lastName=${query}` : ''}`
+      `${PATIENTS_ENDPOINT}${query ? `?lastName=${query}` : ''}`
     );
     const patientRecords: PatientRecord[] | string = await res.json();
 
-    if(typeof patientRecords === 'string') {
-      throw new Error(patientRecords)
+    if (typeof patientRecords === 'string') {
+      throw new Error(patientRecords);
     }
 
     return json({ patientRecords, err: null });
   } catch (err: unknown) {
     if (err instanceof Error) {
       return json({ patientRecords: [] as PatientRecord[], err: err.message });
-      // TODO: Better error messages
+      // TODO: Better error display messages
     }
 
-    return json({ patientRecords: [] as PatientRecord[], err: 'unknown error' });
+    return json({
+      patientRecords: [] as PatientRecord[],
+      err: 'unknown error',
+    });
   }
 };
 
