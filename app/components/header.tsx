@@ -6,7 +6,7 @@ const Header = ({ error }: { error: string | null }) => {
   return (
     <header>
       <h1>accuBook Dashboard</h1>
-      {error && <span role='alert'>${error}</span>}
+      {error && <span role='alert'>{error}</span>}
       <Form
         method='post'
         onChange={(event) => {
