@@ -23,6 +23,7 @@ describe('Patients', () => {
         id: '2',
       },
     ];
+
     render(
       <PatientRecordsContext.Provider value={fakeData}>
         <Patients />
@@ -30,8 +31,11 @@ describe('Patients', () => {
     );
 
     expect(await screen.findByText('de Pasta, Pastino')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Sort by name (↓ descending)' })
+    ).toBeInTheDocument();
   });
   // TODO:
   // - test status string renders
-  // - test Sort by name asc/desc message changes
+  // - test Sort by name asc/desc message changes and (mocked) sort function called
 });

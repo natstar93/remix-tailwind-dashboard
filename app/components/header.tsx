@@ -12,11 +12,12 @@ const Header = () => {
           submit(event.currentTarget, { replace: true });
         }}
         aria-label='patient search form'
+        autoComplete='off'
       >
-        <label className='text-white p-2' htmlFor='patientSearch'>
+        <label className='text-white p-2' htmlFor='searchTerm'>
           Search by last name:
         </label>
-        <input id='patientSearch' autoComplete='off' name='patientSearch' />
+        <input id='searchTerm' autoComplete='off' name='searchTerm' />
       </Form>
     </header>
   );

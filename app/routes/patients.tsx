@@ -51,8 +51,7 @@ export default function Patients() {
       <h1>Patient Vaccination Records</h1>
       <div className='flex justify-end '>
         <button className='text-white bg-black p-2' onClick={onSortButtonClick}>
-          Sort by name (
-          {isAscending ? <> &darr; descending</> : <>&uarr; ascending </>})
+          Sort by name ({isAscending ? <>&darr; descending</> : <>&uarr; ascending</>})
         </button>
       </div>
       <table className='size-full p-2 border-4 border-solid border-brand-green'>
@@ -69,12 +68,8 @@ export default function Patients() {
               ({ id, lastName, firstName, nhsNumber, vaccineType }) => (
                 <tr key={id}>
                   <td>{`${lastName}, ${firstName}`}</td>
-                  <td>
-                    {nhsNumber}
-                  </td>
-                  <td>
-                    {vaccineType}
-                  </td>
+                  <td>{nhsNumber}</td>
+                  <td>{vaccineType}</td>
                 </tr>
               )
             )

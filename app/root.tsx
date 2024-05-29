@@ -30,7 +30,7 @@ export const links: LinksFunction = () => [
 
 export async function action({ request }: ActionFunctionArgs) {
   const formData = await request.formData();
-  const searchTerm = formData.get('patientSearch') || '';
+  const searchTerm = formData.get('searchTerm') || '';
 
   if (searchTerm.toString().length > 1) {
     return redirect(`/patients?q=${searchTerm}`);
