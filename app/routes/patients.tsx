@@ -43,7 +43,7 @@ export default function Patients() {
       ? sortByAscending(records)
       : sortByDescending(records);
     setOrderedRecords(sortedRecords);
-    setStatus(records.length ? '' : 'No records available');
+    setStatus(records.length ? '' : 'No records found');
   }, [records, isAscending, setOrderedRecords]);
 
   return (
@@ -65,7 +65,7 @@ export default function Patients() {
         </thead>
         <tbody>
           {orderedRecords.length ? (
-            orderedRecords.map(
+            orderedRecords?.map(
               ({ id, lastName, firstName, nhsNumber, vaccineType }) => (
                 <tr key={id}>
                   <td>{`${lastName}, ${firstName}`}</td>
@@ -80,7 +80,7 @@ export default function Patients() {
             )
           ) : (
             <tr>
-              <td>{status}</td>
+              <td className='p-4'>{status}</td>
             </tr>
           )}
         </tbody>

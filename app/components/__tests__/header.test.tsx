@@ -30,7 +30,7 @@ describe('Header', () => {
   it('renders header text', () => {
     renderWithRouter(<Header />);
 
-    expect(screen.getByRole('heading')).toHaveTextContent('accuBook Dashboard');
+    expect(screen.getByText('accuBook Dashboard')).toBeInTheDocument();
   });
 
   it('calls submit on input change', async () => {

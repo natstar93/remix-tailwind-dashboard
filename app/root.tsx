@@ -35,7 +35,6 @@ export async function action({ request }: ActionFunctionArgs) {
   if (searchTerm.toString().length > 1) {
     return redirect(`/patients?q=${searchTerm}`);
   }
-
   return redirect(`/patients`);
 }
 

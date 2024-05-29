@@ -36,7 +36,7 @@ describe('App loader', () => {
 
     expect(response).toBeInstanceOf(Response);
     const res = await response.json();
-    expect(res).toEqual({ err: null, patientRecords: [mockedPatientRecord] });
+    expect(res).toEqual([mockedPatientRecord]);
     expect(global.fetch).toHaveBeenCalledWith(PATIENTS_ENDPOINT);
   });
 
@@ -49,15 +49,15 @@ describe('App loader', () => {
 
     expect(response).toBeInstanceOf(Response);
     const res = await response.json();
-    expect(res).toEqual({ err: null, patientRecords: [mockedPatientRecord] });
+    expect(res).toEqual([mockedPatientRecord]);
     expect(global.fetch).toHaveBeenCalledWith(
       `${PATIENTS_ENDPOINT}?lastName=name`
     );
   });
 
   // TODO:
-  // - returns error when fetch returns 'no records' string
-  // - returns error when fetch throws error
+  // - returns empty array when fetch returns 'no records' string
+  // - test error boundary
 });
 
 describe('App action', () => {

@@ -31,4 +31,7 @@ describe('Patients', () => {
 
     expect(await screen.findByText('de Pasta, Pastino')).toBeInTheDocument();
   });
+  // TODO:
+  // - test status string renders
+  // - test Sort by name asc/desc message changes
 });
