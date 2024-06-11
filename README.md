@@ -1,4 +1,4 @@
-# AccuBook Dashboard
+# Remix Tailwind Dashboard
 https://remix-tailwind-dashboard.onrender.com (free plan, takes a long time to load)
 
 ## How to Run
